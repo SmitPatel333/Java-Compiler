@@ -76,8 +76,9 @@ public class Lexer {
 		return temp;
 	}
 	static List<Token> lex(ArrayList<Character> arl) {
-        	List<Token> result = new ArrayList<Token>();
-        	List<String> lexemes = getLexemes(arl);
+		
+        List<Token> result = new ArrayList<Token>();
+        List<String> lexemes = getLexemes(arl);
 		List<Types> ty = getTypes(lexemes);
 		for(int i = 0; i < lexemes.size(); i++) {
 			Token t = new Token(ty.get(i), lexemes.get(i));
