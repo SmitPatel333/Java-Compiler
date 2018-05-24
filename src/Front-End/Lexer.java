@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.CharBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Lexer {
@@ -55,6 +56,9 @@ public class Lexer {
 		List<String> temp = new ArrayList<String>();
 		return temp;
     }
+	private static List<String> Keywords = Arrays.asList("boolean");
+	private static List<Character> Separators = Arrays.asList('(', ')', '{', '}', '[', ']', ';', ',', '.', ':');
+	private static List<String> Operators = Arrays.asList("+", "+=", "-", "-=");
 	private static List<Types> getTypes(List<String> lst) {
 		/*if(str.equals("True") || str.equals("False")) {
 			return Types.Literal;
