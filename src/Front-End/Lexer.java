@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import Blankboard.Types;
+
 public class Lexer {
 	private static enum Types{
 		Identifier, Keyword, Seperator, Operator, Literal 
@@ -56,30 +58,30 @@ public class Lexer {
 		List<String> temp = new ArrayList<String>();
 		return temp;
     }
-	private static List<String> Keywords = Arrays.asList("boolean");
-	private static List<Character> Separators = Arrays.asList('(', ')', '{', '}', '[', ']', ';', ',', '.', ':');
-	private static List<String> Operators = Arrays.asList("+", "+=", "-", "-=");
+	private static List<String> Keywords = Arrays.asList("abstract", "assert", "boolean", "break", "byte", "case", "catch", "char", "class", "continue", "default", "do", "double", "else", "enum", "extends", "final", "finally", "float", "for", "if", "implements", "import", "instanceof", "int", "interface", "long", "native", "new", "package", "private", "protected", "public", "return", "short", "static", "strictfp", "super", "switch", "syncronized", "this", "throw", "throws", "transient", "try", "void", "volatile", "while", "true", "null", "false");
+	private static List<String> Separators = Arrays.asList("(", ")", "{", "}", "[", "]", ";", ",", ".", ":");
+	private static List<String> Operators = Arrays.asList("+", "+=", "-", "-=", "*", "*=", "/", "/=", "%", "%=", ">", ">=", "<", "<=", "!", "!=", "++", "--", "&&", "||", "==", "=", "?:");
 	private static List<Types> getTypes(List<String> lst) {
-		/*if(str.equals("True") || str.equals("False")) {
-			return Types.Literal;
-		}
-		if(((str.charAt(0)) == '/')) {
-			return Types.Comment;
-		}
-		if((str.equals("=") || str.equals("+") || str.equals("-") || str.equals("*"))) {
-			return Types.Operator;
-		}
-		for(int i = 0; i < str.length(); ) {
-			if(Character.isDigit(str.charAt(i))) {
-				return Types.Literal;
+		List<Types> typ = new ArrayList<Types>();
+		for(int i = 0; i < lst.size(); i++) {
+			String s = lst.get(i);
+			if(Keywords.contains(s)) {
+				typ.add(Types.Keyword);
 			}
-			if(Character.isLetter(str.charAt(i))) {
-				
+			if(Separators.contains(s)) {
+				typ.add(Types.Separator);
+			}
+			if(Operators.contains(s)) {
+				typ.add(Types.Operator);
+			}
+			if(Keywords.contains(lst.get(i-1))) {
+				typ.add(Types.Identifier);
+			}
+			else {
+				typ.add(Types.Literal);
 			}
 		}
-		return Types.Comment;*/
-		List<Types> temp = new ArrayList<Types>();
-		return temp;
+		return typ;
 	}
 	static List<Token> lex(File f) throws FileNotFoundException, IOException{
         List<Token> result = new ArrayList<Token>();
