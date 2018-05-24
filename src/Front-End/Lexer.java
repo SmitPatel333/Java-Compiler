@@ -1,11 +1,16 @@
 package front_end;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Lexer {
 	private static enum Types{
-		Identifier, Keyword, Seperator, Operator, Literal, Comment 
+		Identifier, Keyword, Seperator, Operator, Literal 
 	}
 	private static class Token {
 		private final Types t;
@@ -32,9 +37,6 @@ public class Lexer {
 				break;
 			case Literal:
 				st = "Literal<" + s + ">";
-				break;
-			case Comment:
-				st = "Comment<" + s + ">";
 				break;
 			}
 			return st;
@@ -75,10 +77,17 @@ public class Lexer {
 		List<Types> temp = new ArrayList<Types>();
 		return temp;
 	}
-	static List<Token> lex(ArrayList<Character> arl) {
-		
+	static List<Token> lex(File f) throws FileNotFoundException, IOException{
         List<Token> result = new ArrayList<Token>();
-        List<String> lexemes = getLexemes(arl);
+        FileReader fr = new FileReader(f);
+        CharBuffer cb = CharBuffer.allocate(1000000);
+        fr.read(cb);
+        List<Character> chars = new ArrayList<Character>();
+        for(int i = 0; i < cb.length(); i++) {
+        	char c = cb.charAt(i);
+        	chars.add(c);
+        }
+        List<String> lexemes = getLexemes(chars);
 		List<Types> ty = getTypes(lexemes);
 		for(int i = 0; i < lexemes.size(); i++) {
 			Token t = new Token(ty.get(i), lexemes.get(i));
