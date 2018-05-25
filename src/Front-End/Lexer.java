@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import Blankboard.Types;
-
 public class Lexer {
 	private static enum Types{
 		Identifier, Keyword, Seperator, Operator, Literal 
@@ -45,7 +43,25 @@ public class Lexer {
 			return st;
 		}
 	}
+	private static List<Character> delete_comments(List<Character> ls) {
+		List<Character> temp = ls;
+		List<String> comments = new ArrayList<String>();
+		for(int i = 0; i < temp.size(); i++) {
+			char c = temp.get(i);
+			if(c == '/') {
+				
+			}
+			else {
+				break;
+			}
+		}
+		for(String s: comments) {
+			char[] a = s.toCharArray();
+		}
+		return temp;
+	}
 	private static List<String> getLexemes(List<Character> chars) {
+		Lexer.delete_comments(chrs);
         /*int j = i;
         for( ; j < s.length(); ) {
             if(Character.isLetter(s.charAt(j))) {
