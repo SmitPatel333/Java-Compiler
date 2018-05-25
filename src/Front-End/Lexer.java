@@ -1,5 +1,6 @@
 package front_end;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -43,25 +44,32 @@ public class Lexer {
 			return st;
 		}
 	}
-	private static List<Character> delete_comments(List<Character> ls) {
-		List<Character> temp = ls;
-		List<String> comments = new ArrayList<String>();
-		for(int i = 0; i < temp.size(); i++) {
-			char c = temp.get(i);
-			if(c == '/') {
-				
+	private static List<String> delete_comments(List<String> ls) {
+		List<String> temp = ls;
+		for(String str: temp){
+			for(int i = 0; i < str.length(); i++) {
+				char a = str.charAt(i);
+				if(a == '/') {
+					char b = str.charAt(i-1);
+					if(Character.isWhitespace(b)) {
+						switch(str.charAt(i+1)) {
+						case '/':
+							temp.remove(str);
+							break;
+						case '*':
+							break;
+						}
+					}
+				}
+				else {
+					break;
+				}
 			}
-			else {
-				break;
-			}
-		}
-		for(String s: comments) {
-			char[] a = s.toCharArray();
 		}
 		return temp;
 	}
-	private static List<String> getLexemes(List<Character> chars) {
-		Lexer.delete_comments(chrs);
+	private static List<String> getLexemes(List<String> strg) {
+		Blankboard.delete_comments(strg);
         /*int j = i;
         for( ; j < s.length(); ) {
             if(Character.isLetter(s.charAt(j))) {
@@ -102,14 +110,13 @@ public class Lexer {
 	static List<Token> lex(File f) throws FileNotFoundException, IOException{
         List<Token> result = new ArrayList<Token>();
         FileReader fr = new FileReader(f);
-        CharBuffer cb = CharBuffer.allocate(1000000);
-        fr.read(cb);
-        List<Character> chars = new ArrayList<Character>();
-        for(int i = 0; i < cb.length(); i++) {
-        	char c = cb.charAt(i);
-        	chars.add(c);
+        BufferedReader br = new BufferedReader(fr);
+        List<String> lines = new ArrayList<String>();
+        for(int i = 0; i < Get_Lines.getLineCount(f); i++) {
+            String line = br.readLine();
+            lines.add(line);
         }
-        List<String> lexemes = getLexemes(chars);
+        List<String> lexemes = getLexemes(lines);
 		List<Types> ty = getTypes(lexemes);
 		for(int i = 0; i < lexemes.size(); i++) {
 			Token t = new Token(ty.get(i), lexemes.get(i));
