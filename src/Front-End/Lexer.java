@@ -44,7 +44,7 @@ public class Lexer {
 			return st;
 		}
 	}
-	private static List<String> delete_comments(List<String> ls) {
+	private static List<String> remove_comments(List<String> ls) {
 		List<String> temp = ls;
 		for(String str: temp){
 			for(int i = 0; i < str.length(); i++) {
@@ -52,12 +52,8 @@ public class Lexer {
 				if(a == '/') {
 					char b = str.charAt(i-1);
 					if(Character.isWhitespace(b)) {
-						switch(str.charAt(i+1)) {
-						case '/':
+						if(str.charAt(i+1) == '/') {
 							temp.remove(str);
-							break;
-						case '*':
-							break;
 						}
 					}
 				}
@@ -69,7 +65,7 @@ public class Lexer {
 		return temp;
 	}
 	private static List<String> getLexemes(List<String> strg) {
-		Blankboard.delete_comments(strg);
+		Blankboard.remove_comments(strg);
         /*int j = i;
         for( ; j < s.length(); ) {
             if(Character.isLetter(s.charAt(j))) {
