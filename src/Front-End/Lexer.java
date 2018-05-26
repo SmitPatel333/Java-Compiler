@@ -13,8 +13,7 @@ import java.util.List;
 public class Lexer {
 	private static enum Types{
 		Identifier, Keyword, Seperator, Operator, Literal 
-	}
-	private static class Token {
+		private static class Token {
 		private final Types t;
 		private final String s;
 		
@@ -65,7 +64,7 @@ public class Lexer {
 		return temp;
 	}
 	private static List<String> getLexemes(List<String> strg) {
-		Blankboard.remove_comments(strg);
+		Lexer.remove_comments(strg);
         /*int j = i;
         for( ; j < s.length(); ) {
             if(Character.isLetter(s.charAt(j))) {
