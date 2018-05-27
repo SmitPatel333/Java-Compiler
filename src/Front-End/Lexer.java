@@ -8,7 +8,11 @@ import java.io.IOException;
 import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+
+import Blankboard.Token;
+import Blankboard.Types;
 
 public class Lexer {
 	private static enum Types{
@@ -44,22 +48,41 @@ public class Lexer {
 			return st;
 		}
 	}
-	private static List<String> remove_comments(List<String> ls) {
-		List<String> temp = ls;
-		for(String str: temp){
-			for(int i = 0; i < str.length(); i++) {
-				char a = str.charAt(i);
+	private static List<String> remove_comments(HashMap<Integer, String> hm) {
+		for(int i = 0; i < hm.size(); i++){
+			String str = hm.get(i+1);
+			for(int j = 0; j < str.length(); j++) {
+				char a = str.charAt(j);
 				if(a == '/') {
-					char b = str.charAt(i-1);
+					char b = str.charAt(j-1);
 					if(Character.isWhitespace(b)) {
-						if(str.charAt(i+1) == '/') {
-							temp.remove(str);
+						switch(str.charAt(j+1)) {
+						case '/':
+							hm.remove(i);
+							break;
+						case '*':
+							for(int k = 0; k < hm.size() - i; k++) {
+								if(hm.get(i+k).contains("*/")) {
+									for(int l = 0; l <= k; l++) {
+										hm.remove(i+l);
+									}
+									break;
+								}
+							}
+							break;
 						}
 					}
 				}
-				else {
-					break;
-				}
+			}
+		}
+		List<String> temp = new ArrayList<String>();
+		for(int i = 0; i < hm.size(); i++) {
+			String s = hm.get(i+1);
+			if(s == null) {
+				continue;
+			}
+			else {
+				temp.add(s);
 			}
 		}
 		return temp;
@@ -107,12 +130,13 @@ public class Lexer {
         List<Token> result = new ArrayList<Token>();
         FileReader fr = new FileReader(f);
         BufferedReader br = new BufferedReader(fr);
-        List<String> lines = new ArrayList<String>();
+        HashMap<Integer, String> lines = new HashMap<Integer, String>();
         for(int i = 0; i < Get_Lines.getLineCount(f); i++) {
             String line = br.readLine();
-            lines.add(line);
+            lines.put(i+1, line);
         }
-        List<String> lexemes = getLexemes(lines);
+        List<String> nc_Lines = remove_comments(lines);
+        List<String> lexemes = getLexemes(nc_Lines);
 		List<Types> ty = getTypes(lexemes);
 		for(int i = 0; i < lexemes.size(); i++) {
 			Token t = new Token(ty.get(i), lexemes.get(i));
