@@ -13,7 +13,7 @@ import java.util.List;
 public class Lexer {
 	private static enum Types{
 		Identifier, Keyword, Seperator, Operator, Literal 
-		private static class Token {
+	private static class Token {
 		private final Types t;
 		private final String s;
 		
