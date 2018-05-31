@@ -5,15 +5,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class Lexer {
+public class Blankboard {
 	private static enum Types{
-		Identifier, Keyword, Seperator, Operator, Literal 
+		Identifier, Keyword, Separator, Operator, Literal 
+	}
 	private static class Token {
 		private final Types t;
 		private final String s;
@@ -31,8 +31,8 @@ public class Lexer {
 			case Keyword:
 				st = "Keyword<" + s + ">";
 				break;
-			case Seperator:
-				st = "Seperator<" + s + ">";
+			case Separator:
+				st = "Separator<" + s + ">";
 				break;
 			case Operator:
 				st = "Operator<" + s + ">";
@@ -112,20 +112,23 @@ public class Lexer {
 						}
 					}
 					else {
-						for(int j = 1; j < s.length(); i++) {
+						for(int j = 1; j < s.length() - i; j++) {
 							char a = s.charAt(i+j);
+							int b = i+j;
 							if(Character.isWhitespace(a)) {
-								str.add(s.substring(i, j-1));
+								str.add(s.substring(i, b));
 								i += j;
 								break;
 							}
 							else if(Operators.contains(Character.toString(a))){
-								str.add(s.substring(i, j-1));
+								str.add(s.substring(i, b));
+								str.add(Character.toString(a));
 								i += j;
 								break;
 							}
 							else if(Separators.contains(Character.toString(a))) {
-								str.add(s.substring(i, j-1));
+								str.add(s.substring(i, b));
+								str.add(Character.toString(a));
 								i += j;
 								break;
 							}
@@ -144,13 +147,13 @@ public class Lexer {
 			if(Keywords.contains(s)) {
 				typ.add(Types.Keyword);
 			}
-			if(Separators.contains(s)) {
+			else if(Separators.contains(s)) {
 				typ.add(Types.Separator);
 			}
-			if(Operators.contains(s)) {
+			else if(Operators.contains(s)) {
 				typ.add(Types.Operator);
 			}
-			if(Keywords.contains(lst.get(i-1))) {
+			else if(Keywords.contains(lst.get(i-1))) {
 				typ.add(Types.Identifier);
 			}
 			else {
