@@ -86,23 +86,60 @@ public class Lexer {
 		}
 		return temp;
 	}
-	private static List<String> getLexemes(List<String> strg) {
-		Lexer.remove_comments(strg);
-        /*int j = i;
-        for( ; j < s.length(); ) {
-            if(Character.isLetter(s.charAt(j))) {
-                j++;
-            } else {
-                return s.substring(i, j);
-            }
-        }
-        return s.substring(i, j);*/
-		List<String> temp = new ArrayList<String>();
-		return temp;
-    }
 	private static List<String> Keywords = Arrays.asList("abstract", "assert", "boolean", "break", "byte", "case", "catch", "char", "class", "continue", "default", "do", "double", "else", "enum", "extends", "final", "finally", "float", "for", "if", "implements", "import", "instanceof", "int", "interface", "long", "native", "new", "package", "private", "protected", "public", "return", "short", "static", "strictfp", "super", "switch", "syncronized", "this", "throw", "throws", "transient", "try", "void", "volatile", "while", "true", "null", "false");
 	private static List<String> Separators = Arrays.asList("(", ")", "{", "}", "[", "]", ";", ",", ".", ":");
 	private static List<String> Operators = Arrays.asList("+", "+=", "-", "-=", "*", "*=", "/", "/=", "%", "%=", ">", ">=", "<", "<=", "!", "!=", "++", "--", "&&", "||", "==", "=", "?:");
+	private static List<String> getLexemes(List<String> strg) {
+		List<String> str = new ArrayList<String>();
+		for(String s: strg) {
+			for(int i = 0; i < s.length(); i++) {
+				char c = s.charAt(i);
+				if(Character.isWhitespace(c)) {
+					continue;
+				}
+				else {
+					if(Separators.contains(Character.toString(c))) {
+						str.add(Character.toString(c));
+						continue;
+					}
+					else if(Operators.contains(Character.toString(c))) {
+						char d = s.charAt(i+1);
+						String a = new StringBuilder().append(c).append(d).toString();
+						if(Operators.contains(a)) {
+							str.add(a);
+							continue;
+						}
+						else {
+							str.add(Character.toString(c));
+							continue;
+						}
+					}
+					else {
+						for(int j = 1; j < s.length(); i++) {
+							char a = s.charAt(i+j);
+							if(Character.isWhitespace(a)) {
+								str.add(s.substring(i, j-1));
+								i += j;
+								break;
+							}
+							else if(Operators.contains(Character.toString(a))){
+								str.add(s.substring(i, j-1));
+								i += j;
+								break;
+							}
+							else if(Separators.contains(Character.toString(a))) {
+								str.add(s.substring(i, j-1));
+								i += j;
+								break;
+							}
+							
+						}
+					}
+				}
+			}
+		}
+		return str;
+    }
 	private static List<Types> getTypes(List<String> lst) {
 		List<Types> typ = new ArrayList<Types>();
 		for(int i = 0; i < lst.size(); i++) {
