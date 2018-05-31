@@ -11,9 +11,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import Blankboard.Token;
-import Blankboard.Types;
-
 public class Lexer {
 	private static enum Types{
 		Identifier, Keyword, Seperator, Operator, Literal 
