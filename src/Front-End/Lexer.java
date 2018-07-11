@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class Blankboard {
+public class Lexer {
 	private static enum Types{
 		Identifier, Keyword, Separator, Operator, Literal 
 	}
