@@ -1,5 +1,5 @@
 package Grammar;
 
-public class Java_8 {
+public class Java_8 extends Grammar{
 
 }
