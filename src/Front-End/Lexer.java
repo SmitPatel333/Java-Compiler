@@ -46,6 +46,7 @@ public class Lexer {
 	}
 	private static List<String> remove_comments(HashMap<Integer, String> hm) {
 		for(int i = 0; i < hm.size(); i++){
+
 			String str = hm.get(i+1);
 			for(int j = 0; j < str.length(); j++) {
 				char a = str.charAt(j);
@@ -86,6 +87,7 @@ public class Lexer {
 	private static List<String> Keywords = Arrays.asList("abstract", "assert", "boolean", "break", "byte", "case", "catch", "char", "class", "continue", "default", "do", "double", "else", "enum", "extends", "final", "finally", "float", "for", "if", "implements", "import", "instanceof", "int", "interface", "long", "native", "new", "package", "private", "protected", "public", "return", "short", "static", "strictfp", "super", "switch", "syncronized", "this", "throw", "throws", "transient", "try", "void", "volatile", "while", "true", "null", "false");
 	private static List<String> Separators = Arrays.asList("(", ")", "{", "}", "[", "]", ";", ",", ".", ":");
 	private static List<String> Operators = Arrays.asList("+", "+=", "-", "-=", "*", "*=", "/", "/=", "%", "%=", ">", ">=", "<", "<=", "!", "!=", "++", "--", "&&", "||", "==", "=", "?:");
+	private static List<String> Identifiers = Arrays.asList("String", "Scanner", "Stream", "ArrayList", "List", "HashMap");
 	private static List<String> getLexemes(List<String> strg) {
 		List<String> str = new ArrayList<String>();
 		for(String s: strg) {
@@ -154,6 +156,12 @@ public class Lexer {
 				typ.add(Types.Operator);
 			}
 			else if(Keywords.contains(lst.get(i-1))) {
+				typ.add(Types.Identifier);
+			}
+			else if(Separators.contains(lst.get(i-1))) {
+				typ.add(Types.Identifier);
+			}
+			else if(Identifiers.contains(s)) {
 				typ.add(Types.Identifier);
 			}
 			else {
