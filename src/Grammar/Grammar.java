@@ -1,5 +1,6 @@
 package Grammar;
 import java.util.Hashmap;
+import extra_files.Pair;
 
 public class Grammar {
   
