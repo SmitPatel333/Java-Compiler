@@ -1,7 +1,7 @@
 public final class Pair {
   private final int x;
-  private final int y;
-  public Pair(int x, int y) { 
+  private final String y;
+  public Pair(int x, String y) { 
     this.x = x; 
     this.y = y;
   }
