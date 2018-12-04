@@ -1,11 +1,10 @@
 package Grammar;
 
 import java.util.Hashmap;
+import java.util.ArrayList;
 import extra_files.Pair;
 
 public class Grammar {
-  protected HashMap<Pair, String> action_table = new Hashmap<Pair, String>();
-  
   public class production_Rule {
 	  private String left;
 	  private String right;
@@ -15,4 +14,6 @@ public class Grammar {
 		  this.right = right;
 	  }
   }
+  protected HashMap<Pair, String> action_table = new Hashmap<Pair, String>();
+  protected ArrayList<production_Rule> productions = new ArrayList<production_List>();
 }
